@@ -58,7 +58,7 @@ var M2=(e,t)=>()=>(t||e((t={exports:{}}).exports,t),t.exports);var cJ=M2((ho,mo)
 `,Mt(t.p,{children:Mt(t.img,{src:"./images/comp.jpeg",alt:""})}),`
 `,Mt(t.p,{children:"Comparison of different prompt compression paradigms for long-context LLMs"}),`
 `,Mt(t.h3,{children:"Overall Pipeline"}),`
-`,Mt(t.p,{children:Mt(t.img,{src:"./images/ours.jpeg",alt:""})}),`
+`,Mt(t.p,{children:Mt(t.img,{src:"./images/ours.png",alt:""})}),`
 `,Mt(t.ul,{children:[`
 `,Mt(t.li,{children:[`
 `,Mt(t.p,{children:[Mt(t.strong,{children:"Segmenter"})," Maps variable-length text into structured 2D page tensors using natural delimiters, optimizing hardware efficiency while preserving local context boundaries."]}),`
