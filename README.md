@@ -24,7 +24,7 @@
 - **Pipeline**: Segment text into page tensors, encode with dual-path pooling, plan queries with Anchor/Flow/Flash priors, then smooth to sentence boundaries.
 
 <p align="center">
-  <img src="./public/images/ours.jpeg" alt="BEAVER pipeline" width="760"/>
+  <img src="./public/images/ours.png" alt="BEAVER pipeline" width="760"/>
 </p>
 
 - **Sentence Smoother**: Restores syntactic coherence after selection.
