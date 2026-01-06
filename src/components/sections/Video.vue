@@ -13,13 +13,6 @@
     <el-row justify="center">
       <el-col :xs="24" :sm="20" :md="16" :lg="12" :xl="10" >
 
-        <!-- local -->
-        <el-container class="video-container">
-          <video controls muted preload playsinline>
-            <source src="/video/video.mp4" type="video/mp4">
-          </video>
-        </el-container>
-        
         <!-- bilibili -->
         <el-container class="video-container">
           <iframe src="//www.bilibili.com/blackboard/html5mobileplayer.html?bvid=BV1zw68YsEP9" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
