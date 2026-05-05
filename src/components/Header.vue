@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 
-import { ElIcon } from 'element-plus'
 import { SuccessFilled } from '@element-plus/icons-vue'
 
 // 项目主页
 const logo = {
-    name: "Work",
+    name: "BEAVER",
     link: "#",
 }
 
@@ -36,7 +35,7 @@ const logo = {
 
 /* 导航背景 */
 .el-menu {
-	background: none;
+	background: rgba(255, 255, 255, 0.92);
 }
 
 /* 下拉菜单宽度 */
@@ -46,9 +45,9 @@ const logo = {
 
 /* 导航背景特效和阴影 */
 .el-affix--fixed {
-	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-	background-image: radial-gradient(#ffffffca 1px,#ffffff 1px);
-	background-size: 3px 3px;
+	box-shadow: 0 1px 12px rgba(15, 35, 55, 0.08);
+	background: rgba(255, 255, 255, 0.92);
+	backdrop-filter: blur(10px);
 }
 
 /* 水平导航高度 */
@@ -63,6 +62,17 @@ const logo = {
 /* 水平导航高度 */
 .el-menu--horizontal {
     --el-menu-horizontal-height: 50px;
+    border-bottom: 1px solid #edf2f7;
+    justify-content: center;
+}
+
+.el-menu-item {
+  color: #172535;
+  font-weight: 800;
+}
+
+.el-menu-item.is-active {
+  border-bottom-color: #0f5f78;
 }
 
 /* 取消鼠标焦点悬浮在链接上的颜色装饰 */

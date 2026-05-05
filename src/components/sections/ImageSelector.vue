@@ -1,18 +1,27 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-const imageSeletorPaths = [
-  "./images/qa.png",
-  "./images/sum.png",
-  "./images/code.png",
-  "./images/few-shot.png"
-];
-
-const outputImagesPathsStr = [
-  "./images/qa-big.png",
-  "./images/sum-big.png",
-  "./images/code-big.png",
-  "./images/few-shot-big.png"
+const visualizations = [
+  {
+    label: "Financial QA",
+    thumbnail: "./images/financial-qa.png",
+    preview: "./images/financial-qa.png"
+  },
+  {
+    label: "GovReport",
+    thumbnail: "./images/govreport.png",
+    preview: "./images/govreport.png"
+  },
+  {
+    label: "GSM100",
+    thumbnail: "./images/gsm100.png",
+    preview: "./images/gsm100.png"
+  },
+  {
+    label: "CodeU",
+    thumbnail: "./images/codeu.png",
+    preview: "./images/codeu.png"
+  }
 ];
 
 const outputImagesPaths = [];
@@ -24,19 +33,18 @@ let isLoading = ref(true);
 const preloadImageSelector = () => {
   const promises = [];
       
-  for (let i = 0; i < outputImagesPathsStr.length; i++) {
+  for (let i = 0; i < visualizations.length; i++) {
     const outputImg = new Image();
     outputImagesPaths[i] = outputImg;
     const outputPromise = new Promise((resolve) => {
         outputImg.onload = resolve;
     });
-    outputImg.src = outputImagesPathsStr[i];
+    outputImg.src = visualizations[i].preview;
     promises.push(outputPromise);
   }
 
   return Promise.all(promises).then(() => {
     isLoading.value = false;
-    console.log("preloadImageSelector finished");
   });
 }
 
@@ -53,108 +61,149 @@ const handleChange = (value) => {
 </script>
 
 <template>
-  <div>
-    <el-divider />
+  <section class="section-shell selector-shell">
+    <h1 class="section-title">Qualitative Visualization</h1>
 
-    <el-row justify="center">
-      <h1 class="section-title">Different Task Visualization</h1>
-    </el-row>
+    <div class="selector-layout">
+      <div class="thumb-row">
+        <button
+          class="thumb-card"
+          v-for="(visualization, index) in visualizations"
+          :key="visualization.label"
+          type="button"
+          @click="handleChange(index)"
+          :class="{ 'selected-card': indexSelected === index }"
+        >
+          <el-image
+            class="image"
+            :src="visualization.thumbnail"
+            fit="contain"
+          />
+          <span class="thumb-label">{{ visualization.label }}</span>
+        </button>
+      </div>
 
-    <el-row justify="center">
-      <el-col :xs="24" :sm="24" :md="22" :lg="20" :xl="18">
-        <el-row justify="center" class="thumb-row">
-          <el-col :span="6" class="thumb-col" v-for="(imageSeletorPath, index) in imageSeletorPaths" :key="index">
-            <el-image
-              class="image"
-              :src="imageSeletorPath"
-              style="aspect-ratio: 1;"
-              fit="scale-down"
-              @click="handleChange(index)"
-              :class="{ 'selected-image': indexSelected === index, 'unselected-image': indexSelected !== index }"
-            />
-          </el-col>
-        </el-row>
-        <el-row justify="center" class="preview-row">
-          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="preview-col">
-            <el-skeleton
-              class="preview-skeleton-container"
-              :loading="isLoading"
-              animated
-              :throttle="1000"
-            >
-              <template #template>
-                <el-skeleton-item variant="image" class="preview-skeleton" />
-              </template>
-              <template #default>
-                <img :src="outputImagePath" class="output-image" />
-              </template>
-            </el-skeleton>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
-  </div>
+      <el-skeleton
+        class="preview-skeleton-container"
+        :loading="isLoading"
+        animated
+        :throttle="1000"
+      >
+        <template #template>
+          <el-skeleton-item variant="image" class="preview-skeleton" />
+        </template>
+        <template #default>
+          <div class="preview-frame">
+            <img :src="outputImagePath" class="output-image" />
+          </div>
+        </template>
+      </el-skeleton>
+    </div>
+  </section>
 </template>
 
 <style scoped>
 
-.thumb-row {
-  margin-top: 20px;
-  justify-content: center;
+.selector-shell {
+  max-width: 1120px;
+  padding-bottom: 44px;
 }
 
-.thumb-col {
-  max-width: 140px;
+.selector-layout {
+  margin-top: 8px;
+}
+
+.thumb-row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 auto 18px;
+}
+
+.thumb-card {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #dce6ef;
+  border-radius: 8px;
+  color: #2f3d4c;
+  cursor: pointer;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 54px minmax(0, 1fr);
+  min-height: 76px;
+  padding: 10px;
+  text-align: left;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.thumb-card:hover {
+  border-color: #85aebe;
+  box-shadow: 0 10px 24px rgba(15, 35, 55, 0.09);
+  transform: translateY(-1px);
+}
+
+.selected-card {
+  border-color: #0f5f78;
+  box-shadow: 0 12px 26px rgba(15, 95, 120, 0.15);
 }
 
 .image {
-  width: 100%;
-  cursor: pointer;
+  aspect-ratio: 1;
+  border: 1px solid #e5edf4;
+  border-radius: 6px;
+  overflow: hidden;
+  width: 54px;
 }
 
-.preview-row {
-  margin-top: 16px;
-}
-
-.preview-col {
-  display: flex;
-  justify-content: center;
+.thumb-label {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 .preview-skeleton-container {
-  width: min(900px, 100%);
+  width: 100%;
 }
 
 .preview-skeleton {
-  width: min(900px, 100%);
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 3;
   max-height: 90vh;
+  width: 100%;
+}
+
+.preview-frame {
+  background: #f8fafc;
+  border: 1px solid #dce6ef;
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(15, 35, 55, 0.10);
+  padding: 14px;
 }
 
 .output-image {
-  width: min(900px, 100%);
+  background: #ffffff;
+  border-radius: 6px;
+  display: block;
   height: auto;
   max-height: 1680px;
-  object-fit: contain;
-  display: block;
   margin: 0 auto;
+  object-fit: contain;
+  width: 100%;
 }
 
-.image:hover{
-  transition: none;
-  box-shadow: 0px 0px 6px 0px #aaaaaa;
+@media (max-width: 900px) {
+  .thumb-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
-.selected-image{
-  transition: 0.5s ease;
-  box-shadow: 0px 0px 6px 0px #aaaaaa;
-}
+@media (max-width: 560px) {
+  .thumb-row {
+    grid-template-columns: 1fr;
+  }
 
-
-/* 未选中图像的样式，颜色变灰 */
-.unselected-image {
-  transition: 0.5s ease;
-  opacity: 0.4;
+  .preview-frame {
+    padding: 8px;
+  }
 }
 
 </style>

@@ -1,44 +1,51 @@
 # Paper Overview
 
 ### Method Compare
-![](./images/comp.jpeg)
+![](./images/method-comparison.png)
 
-Comparison of different prompt compression paradigms for long-context LLMs
+Comparison of different prompt compression paradigms for long-context LLMs. BEAVER targets a higher abstraction level than token pruning by selecting coherent pages with training-free semantic and lexical signals.
 
 ### Overall Pipeline
-![](./images/ours.png)
+![](./images/beaver-pipeline.png)
 
-- **Segmenter** Maps variable-length text into structured 2D page tensors using natural delimiters, optimizing hardware efficiency while preserving local context boundaries.
+- **Segmenter** maps variable-length text into structured 2D page tensors using natural delimiters, optimizing hardware efficiency while preserving local context boundaries.
+- **PageEncoder** reuses the target model's embedding table with dual-path pooling to capture global semantics and salient local cues.
+- **QueryPlanner** selects valuable pages with hybrid semantic-lexical scoring and structural priors: Anchor pages for global metadata, Flow pages for local coherence, and Flash pages for distant critical evidence.
 
-- **PageEncoder** Extracts rich page-level representations via a training-free dual-path pooling mechanism that combines global semantics with unsupervised In-Context ITF weighting.
+![](./images/sentence-smoothing.png)
 
-- **QueryPlanner** Selects the most valuable segments by integrating hybrid semantic-lexical scoring with cognitive structural priors (Anchor, Flow, and Flash) to ensure comprehensive information retention.
-
-![](./images/smooth.png)
-
-The sentence smoother extends the filtered page fragments outward to the nearest sentence boundary, fixing the broken sentences caused by segmentation and ensuring the syntactic coherence of the final compressed text.
+Sentence smoothing extends selected page fragments outward to the nearest sentence boundaries, repairing truncated spans and preserving syntactic coherence in the final compressed context.
 
 ### Experiment Details
 
-We comprehensively evaluated BEAVER on four diverse long-context benchmarks—LongBench, ZeroSCROLLS, RULER, and L-Eval—under strict 2,000 and 3,000 token budgets . All experiments were conducted using gpt-3.5-turbo-instruct as the backend LLM on NVIDIA A100 GPUs, comparing performance against state-of-the-art baselines including the LLMLingua series and embedding-based retrieval methods . Detailed hyperparameter settings are provided in the paper.
+We evaluated BEAVER on LongBench, ZeroSCROLLS, RULER, and L-Eval with fixed hyperparameters across benchmarks. LongBench and ZeroSCROLLS use 2,000 and 3,000 token budgets, RULER uses a 3,000 token budget at 16k context length, and L-Eval uses a 2,000 token budget for out-of-domain generalization. Experiments compare against unsupervised statistical methods, supervised compression methods, embedding retrieval baselines, and recent training-free methods.
 
 ### Results
 
-Extensive evaluations demonstrate that BEAVER outperforms SOTA baselines across multiple benchmarks, particularly dominating RULER, while achieving a 26.4x speedup on 128k contexts.
+BEAVER establishes the strongest training-free results on LongBench and ZeroSCROLLS, sets new training-free state of the art on RULER and L-Eval, and scales to one million tokens with 10.4 seconds of compression latency. At the 1M-token scale, it is 26.9x faster than LongLLMLingua while avoiding the Transformer-block overhead of attention-heavy compressors.
 
-![](./images/main-table.png)
+<div class="figure-grid">
+  <img src="./images/longbench-3k.png" alt="LongBench results at a 3k-token budget" />
+  <img src="./images/zeroscrolls-3k.png" alt="ZeroSCROLLS results at a 3k-token budget" />
+</div>
 
-![](./images/ruler.png)
+<div class="figure-stack compact">
+  <img src="./images/l-eval.png" alt="L-Eval benchmark results" />
+  <img src="./images/ruler.png" alt="RULER benchmark results" />
+</div>
 
-![](./images/l-eval.png)
+<div class="figure-grid performance-grid">
+  <img src="./images/latency-comparison.png" alt="Compression latency comparison" />
+  <img src="./images/scalability-retention.png" alt="Scalability and retention comparison" />
+</div>
 
-![](./images/analysis.png)
+### Qualitative Comparison
 
-
+The updated qualitative cases stress strict token budgets across finance QA, government-report summarization, few-shot mathematical reasoning, and code understanding. BEAVER preserves price rules, procedural exceptions, chain-of-thought examples, and code syntax more reliably than token-level compression baselines.
 
 ### Conclusion
 
-We introduce BEAVER, a training-free framework that revolutionizes prompt compression via structure-aware page selection . By preserving semantic integrity, it achieves SOTA performance in QA and retrieval while delivering a 26x speedup on 128k contexts. As a scalable, plug-and-play module, BEAVER enables efficient long-document understanding without the need for parameter updates.
+We introduce BEAVER, a training-free prompt compression framework that recasts long-context compression as structured operations over a segment-page tensor. It preserves discourse integrity through page-level selection and sentence smoothing, delivers strong retrieval and QA performance across benchmarks, and provides practical high-throughput compression at million-token scale without task-specific training.
 
 ### Reproducibility Statement
 

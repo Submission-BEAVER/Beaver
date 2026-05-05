@@ -15,7 +15,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div class="app-root">
       
       <el-container>
         <el-header><Header/></el-header>
@@ -30,17 +30,76 @@ export default {
 
 <style>
 
+:root {
+  color: #17202a;
+  background: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+}
+
+.app-root {
+  min-height: 100vh;
+}
+
+.el-main {
+  padding: 0;
+}
+
+.section-shell {
+  margin: 0 auto;
+  padding: 54px 24px 12px;
+}
+
+.section-shell + .section-shell {
+  padding-top: 42px;
+}
+
 h1 {
   font-family: "MyFont", Verdana, sans-serif;
-  letter-spacing: 2px;
-  font-size: 28px;
-  margin: 0px;
+  letter-spacing: 0;
+  font-size: 30px;
+  line-height: 1.2;
+  margin: 0 0 24px;
   text-align: center;
 }
 
 h2, h3, h4, h5, h6 {
   font-family: "MyFont", Verdana, sans-serif;
-  letter-spacing: 2px;
+  letter-spacing: 0;
+  color: #111827;
+}
+
+h1:first-child {
+  position: relative;
+}
+
+h1:first-child::after {
+  background: #0f5f78;
+  border-radius: 999px;
+  content: "";
+  display: block;
+  height: 3px;
+  margin: 14px auto 0;
+  width: 56px;
+}
+
+h3 {
+  border-top: 1px solid #e7edf3;
+  font-size: 24px;
+  line-height: 1.25;
+  margin: 54px 0 18px;
+  padding-top: 30px;
+}
+
+h3:first-child {
+  border-top: 0;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 .el-header {
@@ -52,8 +111,22 @@ h2, h3, h4, h5, h6 {
 }
 
 p, li {
-  font-size: 16px;
-  line-height: 1.75rem;
+  color: #334155;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+p {
+  margin: 0 0 18px;
+}
+
+ul {
+  margin: 10px 0 24px;
+  padding-left: 1.4rem;
+}
+
+li {
+  margin: 8px 0;
 }
 
 code {
@@ -107,11 +180,46 @@ a:hover {
 }
 
 p > img {
-  width: 80%;
+  width: 100%;
+  max-width: 1060px;
   display: block;
-  margin: 0 auto;
-  border-radius: 10px;
-  box-shadow: 1px 1px 4px 1px #afafaf;
+  margin: 24px auto 30px;
+  border: 1px solid #dce6ef;
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(15, 35, 55, 0.10);
+}
+
+.figure-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 26px 0 28px;
+}
+
+.figure-grid img,
+.figure-stack img {
+  background: #ffffff;
+  border: 1px solid #dce6ef;
+  border-radius: 8px;
+  box-shadow: 0 12px 30px rgba(15, 35, 55, 0.10);
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.figure-stack {
+  display: grid;
+  gap: 16px;
+  margin: 24px auto 28px;
+}
+
+.figure-stack.compact {
+  max-width: 980px;
+}
+
+.performance-grid {
+  align-items: center;
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
 }
 
 table {
@@ -149,6 +257,37 @@ th, td {
 .katex-display {
   overflow-x: auto;
   overflow-y: hidden;
+}
+
+@media (max-width: 860px) {
+  .section-shell {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .figure-grid,
+  .performance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  h3 {
+    font-size: 22px;
+    margin-top: 44px;
+  }
+}
+
+@media (max-width: 560px) {
+  .section-shell {
+    padding-top: 40px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+
+  p, li {
+    font-size: 16px;
+  }
 }
 
 </style>
